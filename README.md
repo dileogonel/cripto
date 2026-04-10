@@ -21,17 +21,24 @@ A arquitetura foi estruturada seguindo dois níveis diferentes:
 
 ### 2. Comunicação
 
-A comunicação do sistema é composta de dois modelos diferentes: RPC (Remote Procedure Call) e Pub-Sub.
+A comunicação do sistema é composta de dois modelos: RPC e Pub/Sub.
 
-- RPC é utilizado na comunicação da requisição do cliente ao sistema, em que há chamadas de funções a distintos nós da rede.
-- Pub-Sub é utilizado na propagação de mensagens entre os nós da rede, em que, quando há atualização de informação na rede, de forma assíncrona, os nós recebem-a e atualizam os bancos de dados próprios.
+- RPC é utilizado na comunicação do cliente com seu nó de entrada, e também internamente entre nós para operações síncronas como sincronização de ledger e peer discovery.
+- Pub/Sub é utilizado na propagação assíncrona de transações e blocos entre os nós da rede, onde cada nó atualiza seu estado local ao receber uma mensagem.
 
-Ademais, o protocolo de rede escolhido para o sistema foi o TCP.
+O protocolo de transporte adotado é o TCP, garantindo entrega confiável e ordenada das mensagens.
 
 ### 3. Nomeação e Processos
 
 A definir.
 
+### 4. Coordenação
+
+Em questão de coordenação, foram tomadas as seguintes considerações:
+
+- Sincronização é essencial no sistema, dado que os nós devem manter o estado local em concordância entre si. Para alcançar esta propriedade, foi utilizado no sistema um mecanismo de coordenação centralizada, em que um nó central define a ordem global dos eventos.
+- No momento, o sistema foi projetado para que o líder seja fixo.
+- A implementação do Pub/Sub no sistema é realizada por mensagens HTTP diretas entre os nós. 
 
 ## Autores
 
